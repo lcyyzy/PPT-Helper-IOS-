@@ -3,7 +3,7 @@
 //  PPTHelper
 //
 //  Created by apple on 16/5/15.
-//  Copyright © 2016年 Wang. All rights reserved.
+//  Copyright © 2016年 Chaoying. All rights reserved.
 //
 
 import UIKit
@@ -14,15 +14,15 @@ class Introduction: UIViewController
     var width,height:CGFloat!
     var intro1,intro2,intro3,bottom1,bottom2,bottom3:UIView!
     var rect:CGRect!
-    var timer:NSTimer!
-    override func viewWillAppear(animated: Bool)
+    var timer:Timer!
+    override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
         var isDir:ObjCBool=false
-        let path=(documentPath as NSString).stringByAppendingPathComponent("used.txt")
-        if NSFileManager.defaultManager().fileExistsAtPath(path, isDirectory: &isDir)
+        let path=(documentPath as NSString).appendingPathComponent("used.txt")
+        if FileManager.default.fileExists(atPath: path, isDirectory: &isDir)
         {
-            timer=NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(Introduction.go), userInfo: nil, repeats: true)
+            timer=Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(Introduction.go), userInfo: nil, repeats: true)
             timer.fire()
             b=true
             return
@@ -30,44 +30,44 @@ class Introduction: UIViewController
         width=view.frame.width
         height=view.frame.height
         var image:UIImageView!
-        intro1=UIView(frame: CGRectMake(0, 0, width, height*0.656))
-        image=UIImageView(frame: CGRectMake(0, 0, width, height*0.656))
+        intro1=UIView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.656))
+        image=UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.656))
         image.image=UIImage(named: "介绍界面1.png")
         intro1.addSubview(image)
-        bottom1=UIView(frame: CGRectMake(0, height*0.656, width, height*0.344))
-        image=UIImageView(frame: CGRectMake(0, 0, width, height*0.344))
+        bottom1=UIView(frame: CGRect(x: 0, y: height*0.656, width: width, height: height*0.344))
+        image=UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.344))
         image.image=UIImage(named: "下半部分1.png")
         bottom1.addSubview(image)
-        intro2=UIView(frame: CGRectMake(0, 0, width, height*0.656))
-        image=UIImageView(frame: CGRectMake(0, 0, width, height*0.656))
+        intro2=UIView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.656))
+        image=UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.656))
         image.image=UIImage(named: "介绍界面2.png")
         intro2.addSubview(image)
-        bottom2=UIView(frame: CGRectMake(0, height*0.656, width, height*0.344))
-        image=UIImageView(frame: CGRectMake(0, 0, width, height*0.344))
+        bottom2=UIView(frame: CGRect(x: 0, y: height*0.656, width: width, height: height*0.344))
+        image=UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.344))
         image.image=UIImage(named: "下半部分2.png")
         bottom2.addSubview(image)
-        intro3=UIView(frame: CGRectMake(0, 0, width, height*0.656))
-        image=UIImageView(frame: CGRectMake(0, 0, width, height*0.656))
+        intro3=UIView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.656))
+        image=UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.656))
         image.image=UIImage(named: "介绍界面3.png")
         intro3.addSubview(image)
-        bottom3=UIView(frame: CGRectMake(0, height*0.656, width, height*0.344))
-        image=UIImageView(frame: CGRectMake(0, 0, width, height*0.344))
+        bottom3=UIView(frame: CGRect(x: 0, y: height*0.656, width: width, height: height*0.344))
+        image=UIImageView(frame: CGRect(x: 0, y: 0, width: width, height: height*0.344))
         image.image=UIImage(named: "下半部分3.png")
         bottom3.addSubview(image)
         view.addSubview(intro1)
         view.addSubview(bottom1)
         let swipeLeft=UISwipeGestureRecognizer(target: self, action: #selector(Introduction.left))
-        swipeLeft.direction = .Left
+        swipeLeft.direction = .left
         view.addGestureRecognizer(swipeLeft)
         let swipeRight=UISwipeGestureRecognizer(target: self, action: #selector(Introduction.right))
-        swipeRight.direction = .Right
+        swipeRight.direction = .right
         view.addGestureRecognizer(swipeRight)
-        let tap=UITapGestureRecognizer(target: self, action: #selector(Introduction.tapped(_:)))
+        let tap=UITapGestureRecognizer(target: self, action: #selector(handleTap))
         tap.numberOfTapsRequired=1
         view.addGestureRecognizer(tap)
-        rect=CGRectMake(width*0.28, height*0.843, width*0.44, height*0.08)
+        rect=CGRect(x: width*0.28, y: height*0.843, width: width*0.44, height: height*0.08)
     }
-    func left()
+    @objc func left()
     {
         if currentPage==3
         {
@@ -75,11 +75,11 @@ class Introduction: UIViewController
         }
         if currentPage==1
         {
-            intro2.frame=CGRectMake(width, 0, width, height*0.656)
+            intro2.frame=CGRect(x: width, y: 0, width: width, height: height*0.656)
             view.addSubview(intro2)
-            UIView.animateWithDuration(0.5, animations:
+            UIView.animate(withDuration: 0.5, animations:
                 {
-                    self.intro2.frame=CGRectMake(0, 0, self.width, self.height*0.656)
+                    self.intro2.frame=CGRect(x: 0, y: 0, width: self.width, height: self.height*0.656)
                 }, completion:
                 { finished in
                     self.intro1.removeFromSuperview()
@@ -91,11 +91,11 @@ class Introduction: UIViewController
         }
         if currentPage==2
         {
-            intro3.frame=CGRectMake(width, 0, width, height*0.656)
+            intro3.frame=CGRect(x: width, y: 0, width: width, height: height*0.656)
             view.addSubview(intro3)
-            UIView.animateWithDuration(0.5, animations:
+            UIView.animate(withDuration: 0.5, animations:
                 {
-                    self.intro3.frame=CGRectMake(0, 0, self.width, self.height*0.656)
+                    self.intro3.frame=CGRect(x: 0, y: 0, width: self.width, height: self.height*0.656)
                 }, completion:
                 { finished in
                     self.intro2.removeFromSuperview()
@@ -105,7 +105,7 @@ class Introduction: UIViewController
             currentPage=3
         }
     }
-    func right()
+    @objc func right()
     {
         if currentPage==1
         {
@@ -113,11 +113,11 @@ class Introduction: UIViewController
         }
         if currentPage==2
         {
-            intro1.frame=CGRectMake(-width, 0, width, height*0.656)
+            intro1.frame=CGRect(x: -width, y: 0, width: width, height: height*0.656)
             view.addSubview(intro1)
-            UIView.animateWithDuration(0.5, animations:
+            UIView.animate(withDuration: 0.5, animations:
                 {
-                    self.intro1.frame=CGRectMake(0, 0, self.width, self.height*0.656)
+                    self.intro1.frame=CGRect(x: 0, y: 0, width: self.width, height: self.height*0.656)
                 }, completion:
                 { finished in
                     self.intro2.removeFromSuperview()
@@ -128,11 +128,11 @@ class Introduction: UIViewController
         }
         if currentPage==3
         {
-            intro2.frame=CGRectMake(-width, 0, width, height*0.656)
+            intro2.frame=CGRect(x: -width, y: 0, width: width, height: height*0.656)
             view.addSubview(intro2)
-            UIView.animateWithDuration(0.5, animations:
+            UIView.animate(withDuration: 0.5, animations:
                 {
-                    self.intro2.frame=CGRectMake(0, 0, self.width, self.height*0.656)
+                    self.intro2.frame=CGRect(x: 0, y: 0, width: self.width, height: self.height*0.656)
                 }, completion:
                 { finished in
                     self.intro3.removeFromSuperview()
@@ -146,27 +146,27 @@ class Introduction: UIViewController
     {
         get
         {
-            let application=NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+            let application=NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
             return application[0]
         }
     }
-    func tapped(sender: UITapGestureRecognizer)
+    @objc func handleTap(_ sender: UITapGestureRecognizer)
     {
-        let loc=sender.locationInView(view)
-        if currentPage==3 && CGRectContainsPoint(rect, loc)
+        let loc=sender.location(in: view)
+        if currentPage==3 && rect.contains(loc)
         {
-            let path=(documentPath as NSString).stringByAppendingPathComponent("used.txt")
-            NSFileManager.defaultManager().createFileAtPath(path, contents: nil, attributes: nil)
-            performSegueWithIdentifier("go", sender: self)
+            let path=(documentPath as NSString).appendingPathComponent("used.txt")
+            FileManager.default.createFile(atPath: path, contents: nil, attributes: nil)
+            performSegue(withIdentifier: "go", sender: self)
         }
     }
     var b=false
-    func go()
+    @objc func go()
     {
         if b
         {
             b=false
-            performSegueWithIdentifier("go", sender: self)
+            performSegue(withIdentifier: "go", sender: self)
         }
     }
 }

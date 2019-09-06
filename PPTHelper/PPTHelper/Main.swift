@@ -3,7 +3,7 @@
 //  PPTHelper
 //
 //  Created by apple on 16/5/15.
-//  Copyright © 2016年 Wang. All rights reserved.
+//  Copyright © 2016年 Chaoying. All rights reserved.
 //
 
 import UIKit
@@ -13,60 +13,60 @@ class Main: UIViewController
     var background:UIImageView!
     var width,height:CGFloat!
     var rect1,rect2,rect3,rect4:CGRect!
-    override func viewWillAppear(animated: Bool)
+    override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
         background=UIImageView(frame: view.frame)
         background.image=UIImage(named: "主界面.png")
         view.addSubview(background)
-        let tap=UITapGestureRecognizer(target: self, action: #selector(Main.tapped(_:)))
+        let tap=UITapGestureRecognizer(target: self, action: #selector(handleTap))
         tap.numberOfTapsRequired=1
         view.addGestureRecognizer(tap)
         width=view.frame.width
         height=view.frame.height
-        rect1=CGRectMake(width*0.25, height*0.50, width*0.50, height*0.07)
-        rect2=CGRectMake(width*0.25, height*0.62, width*0.50, height*0.07)
-        rect3=CGRectMake(width*0.25, height*0.74, width*0.50, height*0.07)
-        rect4=CGRectMake(width*0.31, height*0.86, width*0.38, height*0.06)
+        rect1=CGRect(x: width*0.25, y: height*0.50, width: width*0.50, height: height*0.07)
+        rect2=CGRect(x: width*0.25, y: height*0.62, width: width*0.50, height: height*0.07)
+        rect3=CGRect(x: width*0.25, y: height*0.74, width: width*0.50, height: height*0.07)
+        rect4=CGRect(x: width*0.31, y: height*0.86, width: width*0.38, height: height*0.06)
     }
     var label:UILabel!
     var image:UIImageView!
-    var timer:NSTimer!
+    var timer:Timer!
     var counter=0
-    func tapped(sender: UITapGestureRecognizer)
+    @objc func handleTap(_ sender: UITapGestureRecognizer)
     {
-        let loc=sender.locationInView(view)
-        if CGRectContainsPoint(rect1, loc)
+        let loc=sender.location(in: view)
+        if rect1.contains(loc)
         {
-            ([1] as NSArray).writeToFile((Introduction().documentPath as NSString).stringByAppendingPathComponent("parameter.txt"), atomically: true)
-            performSegueWithIdentifier("forward", sender: self)
+            ([1] as NSArray).write(toFile: (Introduction().documentPath as NSString).appendingPathComponent("parameter.txt"), atomically: true)
+            performSegue(withIdentifier: "forward", sender: self)
         }
-        if CGRectContainsPoint(rect2, loc)
+        if rect2.contains(loc)
         {
-            ([2] as NSArray).writeToFile((Introduction().documentPath as NSString).stringByAppendingPathComponent("parameter.txt"), atomically: true)
-            performSegueWithIdentifier("forward", sender: self)
+            ([2] as NSArray).write(toFile: (Introduction().documentPath as NSString).appendingPathComponent("parameter.txt"), atomically: true)
+            performSegue(withIdentifier: "forward", sender: self)
         }
-        if CGRectContainsPoint(rect3, loc)
+        if rect3.contains(loc)
         {
-            ([3] as NSArray).writeToFile((Introduction().documentPath as NSString).stringByAppendingPathComponent("parameter.txt"), atomically: true)
-            performSegueWithIdentifier("forward", sender: self)
+            ([3] as NSArray).write(toFile: (Introduction().documentPath as NSString).appendingPathComponent("parameter.txt"), atomically: true)
+            performSegue(withIdentifier: "forward", sender: self)
         }
-        if CGRectContainsPoint(rect4, loc)
+        if rect4.contains(loc)
         {
             image=UIImageView(frame: view.frame)
             image.image=UIImage(named: "连接界面.png")
             view.addSubview(image)
-            label=UILabel(frame: CGRectMake(0, height*0.25, width, height*0.08))
-            label.textAlignment = .Center
+            label=UILabel(frame: CGRect(x: 0, y: height*0.25, width: width, height: height*0.08))
+            label.textAlignment = .center
             label.font=UIFont(name: "Helvetica", size: height*0.08)
             label.text="0%"
             image.addSubview(label)
             counter = -10
-            timer=NSTimer.scheduledTimerWithTimeInterval(0.04, target: self, selector: #selector(Main.update), userInfo: nil, repeats: true)
+            timer=Timer.scheduledTimer(timeInterval: 0.04, target: self, selector: #selector(Main.update), userInfo: nil, repeats: true)
             timer.fire()
         }
     }
-    func update()
+    @objc func update()
     {
         if counter>=0 && counter<=100
         {
