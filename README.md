@@ -4,6 +4,7 @@ A gesture recognition IOS App to control page flipping in powerpoint
 ## Overview
 ### Video
 Pure Gesture Recognition: https://youtu.be/5uBtIeF_7ZQ
+
 App Usage and Applicable Scenarios: https://youtu.be/3qL2CDyPdLg
 
 ### Requirement
